@@ -1,33 +1,40 @@
-const fs = require("fs")
-const path = require("path")
+
 const jwt = require("jsonwebtoken")
-// const User = require("../models/airbnbuser")
-const User = require("../models/usersinfo")
+const User = require("../models/usersinfo");
+const publicKey = require("../utils/keyholder");
 
 
 
 async function auth(req, res, next) {
+  let user
   try {
     console.log("caught")
 
-    const token = String(req.headers.authorization).split(" ")[1];
+    const token = req.headers.authorization && String(req.headers.authorization).split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({ msg: "unauthorised1" });
+      return res.status(401).json({ message: "unauthorised 1" });
     }
+    console.log("caught2")
 
-    const publicKey = fs.readFileSync(path.join(__dirname, "../public.pem"));
+    console.log("caught3")
+
     const decoded = jwt.verify(token, publicKey, { algorithms: "RS256" });
-    const user = await User.findOne({ _id: decoded.id });
-
+    console.log("caught4")
+    console.log(decoded)
+    const id = decoded.id
+    console.log(id)
+    user = await User.findOne({ _id: id })
     if (!user) {
-      return res.status(401).json({ msg: "unauthorised2" });
+      return res.status(401).json({ message: "unauthorised 2" });
     }
-    req["user"] = user;
+    else {
+      req["user"] = user;
+    }
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ messagee: "unauthorised3" });
+    return res.status(401).json({ message: error.message });
   }
 
 

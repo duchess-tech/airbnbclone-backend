@@ -5,6 +5,7 @@ const router = Router()
 const { PropertyListing, createPropertyId, updatePropertyById, FindProperty, getAllProperties } = require("../controller/AirbnbListings.js")
 const auth = require("../middleware/auth")
 const { UploadPropertyImage } = require("../controller/amazinghousehost")
+const { GetCategory } = require("../controller/categories")
 
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {
@@ -38,6 +39,7 @@ router.post("/imageupload/:id", [auth], UploadPropertyImage)
 router.post("/getuser", [auth], getTheUser)
 router.get("/findproperty/:id", [auth], FindProperty)
 router.get("/getallproperties", getAllProperties)
+router.get("/getcategories", GetCategory)
 
 
 module.exports = router

@@ -1,4 +1,3 @@
-const category = require("../models/categories")
 const Listing = require("../models/listing")
 
 
@@ -6,10 +5,13 @@ const createPropertyId = async (req, res) => {
   console.log("i am here")
   const { _id } = req.user;
 
+
   try {
     const property = await Listing.create({
       host: _id,
     });
+
+
     res.status(200).json({ propertyId: property._id });
   } catch (error) {
     res.status(500).json({ message: "please contact the admin " });
@@ -29,7 +31,7 @@ const updatePropertyById = async (req, res) => {
 
     res.status(200).json({ property: property });
   } catch (error) {
-    res.status(500).json({ message: "please contact the adminkhllhk " });
+    res.status(500).json({ message: "please contact the admin" });
   }
 };
 
@@ -57,40 +59,17 @@ async function PropertyListing(req, res) {
 
 
 
-const Category = async (req, res) => {
-  try {
-    const categories = await category.create({ ...req.body });
 
-    res.status(200).json({ property: categories });
-  } catch (error) {
-    res.status(500).json({ msg: "please contact the admin " });
-  }
-};
-
-
-
-const getAllCategories = async (req, res) => {
-  try {
-    const categories = await category.find({});
-    const newCategories = categories.map((category) => category.structure);
-    res.status(200).json({ category: newCategories });
-  } catch (error) {
-    res.status(500).json({ message: "please contact the admin" });
-  }
-};
 
 const getAllProperties = async (req, res) => {
 
   try {
-    const Allproperties = []
     const FindAllProperties = await Listing.find({}).populate("host")
-    FindAllProperties.forEach(doc => { Allproperties.push(doc) })
 
-    res.status(200).json({ properties: Allproperties });
-
+    res.status(200).json({ properties: FindAllProperties });
   }
   catch (error) {
-    // res.status(500).json({ message: " Contact the admin " });
+    res.status(500).json({ message: " Contact the admin " });
     console.log(error)
   }
 
@@ -113,4 +92,9 @@ const FindProperty = async (req, res) => {
   }
 };
 
-module.exports = { PropertyListing, Category, getAllCategories, createPropertyId, updatePropertyById, FindProperty, getAllProperties }
+const you = () => {
+  console.log("yoo")
+}
+you()
+
+module.exports = { PropertyListing, createPropertyId, updatePropertyById, FindProperty, getAllProperties }

@@ -44,14 +44,14 @@ ev.on("login", (firstname, lastname, email) => {
 })
 
 
-ev.on("registered", (message,email) => {
+ev.on("registered", (message, email) => {
     mailer.sendMail({
         subject: "AMAZINGHOMES",
         from: gmail_user,
         to: email,
         template: "register",
         ctx: {
-           message:message
+            message: message
         }
     })
 })
