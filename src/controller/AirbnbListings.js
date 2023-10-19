@@ -67,10 +67,14 @@ const getAllProperties = async (req, res) => {
     const FindAllProperties = await Listing.find({}).populate("host")
 
     res.status(200).json({ properties: FindAllProperties });
+    console.log("app.js success")
+
   }
   catch (error) {
     res.status(500).json({ message: " Contact the admin " });
     console.log(error)
+    console.log("app.js error")
+
   }
 
 }
