@@ -3,6 +3,7 @@ const Listing = require("../models/listing");
 
 
 const GetCategory = async (req, res) => {
+    console.log("cat")
     try {
         const category = req.query.placeDescription
         const properties = category ? await Listing.find({ PlaceDescription: category }).populate("host") : []
@@ -11,7 +12,6 @@ const GetCategory = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: "please contact the admin " });
     }
-
 
 }
 

@@ -67,13 +67,11 @@ const getAllProperties = async (req, res) => {
     const FindAllProperties = await Listing.find({}).populate("host")
 
     res.status(200).json({ properties: FindAllProperties });
-    console.log("app.js success")
 
   }
   catch (error) {
     res.status(500).json({ message: " Contact the admin " });
     console.log(error)
-    console.log("app.js error")
 
   }
 
@@ -96,9 +94,43 @@ const FindProperty = async (req, res) => {
   }
 };
 
-const you = () => {
-  console.log("yoo")
-}
-you()
+const getPropertyByFilter = async (req, res) => {
+  const { PlaceDescription, privacy, bedrooms, beds, bathrooms, Amenities, minPrice, maxPrice,
+  } = req.query;
 
-module.exports = { PropertyListing, createPropertyId, updatePropertyById, FindProperty, getAllProperties }
+  const queryObject = {};
+  if (PlaceDescription) {
+    queryObject.structure = PlaceDescription;
+  }
+  if (privacy) {
+    queryObject.privacy = privacy;
+  }
+
+  if (bedrooms) {
+    queryObject.bedrooms = bedrooms;
+  }
+  if (beds) {
+    queryObject.beds = beds;
+  }
+  if (bathrooms) {
+    queryObject.bathrooms = bathrooms;
+  }
+  if (Amenities) {
+    const amenities = Amenities.split(",");
+    queryObject.Amenities = { $all: amenities };
+  }
+  if (minPrice && maxPrice) {
+    queryObject.price = {
+      $gte: minPrice,
+      $lte: maxPrice,
+    };
+  }
+  try {
+    const property = await Listing.find(queryObject).populate("host");
+    res.status(200).json({ property: property });
+  } catch (error) {
+    res.status(500).json({ message: "please contact the admin " });
+  }
+};
+
+module.exports = { PropertyListing, createPropertyId, updatePropertyById, FindProperty, getAllProperties, getPropertyByFilter }

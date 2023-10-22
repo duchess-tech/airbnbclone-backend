@@ -25,6 +25,7 @@ app.use("/user", Airbnbroutes)
 app.use("/propertyImage", Airbnbroutes)
 app.use("/property", Airbnbroutes)
 app.use("/category", Airbnbroutes)
+app.use("/FilterProperties", Airbnbroutes)
 mongoose.connect(MONGO_URL).
     then((res) => {
         console.log("database is connected")
